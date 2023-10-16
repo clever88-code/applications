@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 # Create your models here.
 
 
@@ -20,8 +20,10 @@ class AuthUser(models.Model):
     class Meta:
         managed = False
         db_table = 'auth_user'
-
-
+        verbose_name = 'Преподователь'
+        verbose_name_plural = 'Преподователи'
+    def __str__(self):
+        return f'{self.username}'
 
 
 class office(models.Model):
@@ -37,10 +39,12 @@ class office(models.Model):
         return f'{self.number}'
     
 
-class application(models.Model):
+class Application(models.Model):
+    date = models.DateTimeField(default=timezone.now)
     auth_user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True, blank=True)
     number_cab = models.ForeignKey(office, on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Выберите кабинет')
     description = models.TextField('Описание проблемы')
+    
 
     class Meta:
         #managed = False
@@ -49,6 +53,6 @@ class application(models.Model):
         verbose_name_plural = 'Заявки'
 
     def __str__(self):
-        return f'{self.date}'
+        return f'{self.auth_user}'
 
 

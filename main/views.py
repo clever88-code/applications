@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from .forms import *
-
+from datetime import date
 
 
 # Create your views here.

@@ -43,10 +43,11 @@
                 <li><a href="{% url 'home' %}" class="nav-link px-2 link-secondary">Главная</a></li>
                 {% if user.is_authenticated %}
                 {% if perms.core.view_orders %}
-                <li><a href="/orders" class="nav-link px-2 link-dark">Заказы</a></li>
+                <li><a href="/orders" class="nav-link px-2 link-secondary">Заказы</a></li>
                 {% endif %}
                 {% if perms.core.view_records %}
-                <li><a href="/record" class="nav-link px-2 link-dark">Запись</a></li>
+                <li><a href="/record" class="nav-link px-2 link-secondary">Оставить заявку</a></li>
+                <li><a href="/record" class="nav-link px-2 link-secondary">Мои заявки</a></li>
                 {% endif %}
                 {% endif %}
             </ul>

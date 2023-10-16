@@ -5,18 +5,39 @@
 <div class="container">
     <div class="card w-100">
         <div class="card-body">
-            <form method="post" action="{% url 'add_orders' %}">
+            <h2>Создание новой заявки</h2>
+            <form method="post" action="{% url 'request:add_orders' %}">
                 {% csrf_token %}
                 {{ form|crispy }}
-                {# {% for f in form %} #}
-                {# <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }} </p> #}
-                {# <div class="form-error">{{ f.errors }}</div> #}
-                {# {% endfor %} #}
-                <button class="w-100 btn btn-lg btn-primary mt-4" type="submit" id="submit" onclick="clicks();">Выполнить</button>
+                <button class="w-100 btn btn-lg btn-primary mt-4" type="submit" id="submit" onclick="clicks();">Создать</button>
             </form>
         </div>
     </div>
 
+    <div class="card w-100 mt-4">
+        <div class="card-body">
+            <h2>Ваши заявки</h2>
+            <ul>
+                {% for app in user_applications %}
+                    <li>
+                        <strong>Дата:</strong> {{ app.date }}<br>
+                        <strong>Описание проблемы:</strong> {{ app.description }}<br>
+                        <strong>Кабинет:</strong> {{ app.number_cab }}<br>
+                        <form method="post" action="{% url 'request:delete_application' app.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Удалить</button>
+                            
+
+                        </form>
+                    
+                        <hr>
+                    </li>
+                {% empty %}
+                    <p>У вас нет активных заявок.</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
 <script>
     deleteAsteriskFields()

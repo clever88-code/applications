@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from requests import request
 from core.models import *
 
-class application(forms.ModelForm):
+class Application_forms(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -12,5 +12,5 @@ class application(forms.ModelForm):
 
 
     class Meta:
-        model = application
+        model = Application
         fields = ['number_cab', 'description']
