@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'jazzmin',
     'core',
     'main',
+    'request',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
