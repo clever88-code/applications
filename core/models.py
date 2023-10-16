@@ -40,7 +40,6 @@ class office(models.Model):
 class application(models.Model):
     auth_user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True, blank=True)
     number_cab = models.ForeignKey(office, on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Выберите кабинет')
-    date = models.DateTimeField('Дата записи')
     description = models.TextField('Описание проблемы')
 
     class Meta:
