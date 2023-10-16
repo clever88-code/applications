@@ -2,7 +2,17 @@ from django.db import models
 from django.utils import timezone
 # Create your models here.
 
+class Status(models.Model):
+    name = models.CharField(max_length=128)
 
+    class Meta:
+        #managed = False
+        db_table = 'Status'
+        verbose_name = 'Статус'
+        verbose_name_plural = 'Статус'
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class AuthUser(models.Model):
@@ -40,10 +50,12 @@ class office(models.Model):
     
 
 class Application(models.Model):
-    date = models.DateTimeField(default=timezone.now)
+    date = models.DateTimeField(default=timezone.now, verbose_name = 'Дата и Время')
     auth_user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True, blank=True)
     number_cab = models.ForeignKey(office, on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Выберите кабинет')
     description = models.TextField('Описание проблемы')
+    status_application = models.ForeignKey(Status, on_delete=models.CASCADE, default='1', verbose_name = 'Cтатус')
+    
     
 
     class Meta:

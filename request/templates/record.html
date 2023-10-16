@@ -23,11 +23,11 @@
                         <strong>Дата:</strong> {{ app.date }}<br>
                         <strong>Описание проблемы:</strong> {{ app.description }}<br>
                         <strong>Кабинет:</strong> {{ app.number_cab }}<br>
+                        <strong>Cтатус:</strong> {{ app.status_application }}<br>
                         <form method="post" action="{% url 'request:delete_application' app.id %}">
                             {% csrf_token %}
                             <button type="submit">Удалить</button>
                             
-
                         </form>
                     
                         <hr>
