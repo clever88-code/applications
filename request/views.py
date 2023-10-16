@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import FormView
 import asyncio
-
+from core.models import Status
 from django.views import View
 # Create your views here.
 from django.shortcuts import render, redirect
@@ -18,7 +18,7 @@ class RecordView(FormView):
     success_url = '/record'
     def get(self, request, *args, **kwargs):
         user_id = request.user.id
-        user_applications = Application.objects.filter(auth_user_id=user_id)
+        user_applications = Application.objects.filter(auth_user_id=user_id).exclude(status_application__id=3) #Добовляем исключение для объекта что бы пользователь не видел
         form = Application_forms
         context = {
             'user_applications': user_applications,
@@ -43,7 +43,11 @@ class DeleteApplicationView(View):
         try:
             application = Application.objects.get(id=application_id)
             if application.auth_user_id == request.user.id:
-                application.delete()
+                #получаем 3 объект из таблици Status
+                deleted_status = Status.objects.get(id=3)
+                application.status_application = deleted_status
+                application.save()
+                #application.delete()
                 print(f"Заявка {application_id} удалена успешно.") 
         except Application.DoesNotExist:
             pass
