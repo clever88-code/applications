@@ -39,7 +39,7 @@ class office(models.Model):
 
 class application(models.Model):
     auth_user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True, blank=True)
-    car = models.ForeignKey(office, on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Выберите кабинет')
+    number_cab = models.ForeignKey(office, on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Выберите кабинет')
     date = models.DateTimeField('Дата записи')
     description = models.TextField('Описание проблемы')
 
@@ -51,5 +51,5 @@ class application(models.Model):
 
     def __str__(self):
         return f'{self.date}'
-    
+
 

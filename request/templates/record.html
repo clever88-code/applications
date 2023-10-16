@@ -1,0 +1,25 @@
+{% extends 'main/general.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Заявка{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="card w-100">
+        <div class="card-body">
+            <form method="post" action="{% url 'add_orders' %}">
+                {% csrf_token %}
+                {{ form|crispy }}
+                {# {% for f in form %} #}
+                {# <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }} </p> #}
+                {# <div class="form-error">{{ f.errors }}</div> #}
+                {# {% endfor %} #}
+                <button class="w-100 btn btn-lg btn-primary mt-4" type="submit" id="submit" onclick="clicks();">Выполнить</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script>
+    deleteAsteriskFields()
+    itemFormRow()
+</script>
+{% endblock %}
