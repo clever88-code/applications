@@ -57,21 +57,37 @@ class DeleteApplicationView(View):
         return redirect('/record#record')
     
 
+
+
+
 def Edit_application(request, app_id):
-    application = get_object_or_404(Application, id=app_id)
-    form = ApplicationFormEdit(request.POST, instance=application)
-    print(f'Application data: {application.number_cab}, {application.description}')  # Проверьте данные объекта application
+    
+    current_user = request.user.id
+
+    
+    try:
+        application = Application.objects.get(auth_user=current_user, id=app_id)
+    except Application.DoesNotExist:
+        application = None  
 
     if request.method == 'POST':
-        form = ApplicationFormEdit(request.POST, instance=application)
+        form = ApplicationFormEdit(request.POST, instance=application, initial={'number_cab': application.number_cab, 'description': application.description})
+        print(form)
         if form.is_valid():
             form.save()
-            return redirect('request:record')  # Перенаправьте на страницу с заявками
+            return redirect('request:record')
     else:
-        form = ApplicationFormEdit(instance=application)  # Инициализируйте форму данными из записи
+        form = ApplicationFormEdit(instance=application)
 
     context = {
         'form': form,
         'app': application,
     }
     return render(request, 'record.html', context)
+
+
+
+
+
+
+
