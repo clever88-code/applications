@@ -9,9 +9,12 @@ function leftSmallUl(){
 
 function itemFormRow ()
 {
-    document.getElementById('add_car').querySelectorAll('.form-group').forEach((item)=>{
+   const a = document.getElementById('add_car')
+   if (a) {
+    a.querySelectorAll('.form-group').forEach((item)=>{
         item.classList.add('mx-3')
     })
+   }
 }
 
 function clicks(){
@@ -21,3 +24,5 @@ function clicks(){
 function record(){
     alert('Записано')
 }
+
+

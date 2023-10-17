@@ -1,44 +1,70 @@
 {% extends 'main/general.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block title %}Заявка{% endblock %}
 {% block body %}
-<div class="container">
-    <div class="card w-100">
-        <div class="card-body">
-            <h2>Создание новой заявки</h2>
-            <form method="post" action="{% url 'request:add_orders' %}">
-                {% csrf_token %}
-                {{ form|crispy }}
-                <button class="w-100 btn btn-lg btn-primary mt-4" type="submit" id="submit" onclick="clicks();">Создать</button>
-            </form>
-        </div>
-    </div>
 
-    <div class="card w-100 mt-4">
-        <div class="card-body">
-            <h2>Ваши заявки</h2>
-            <ul>
-                {% for app in user_applications %}
-                    <li>
-                        <strong>Дата:</strong> {{ app.date }}<br>
-                        <strong>Описание проблемы:</strong> {{ app.description }}<br>
-                        <strong>Кабинет:</strong> {{ app.number_cab }}<br>
-                        <strong>Cтатус:</strong> {{ app.status_application }}<br>
-                        <form method="post" action="{% url 'request:delete_application' app.id %}">
-                            {% csrf_token %}
-                            <button type="submit">Удалить</button>
-                            
-                        </form>
+<div class="container">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="add_application-tab" data-bs-toggle="tab" href="#add_application" role="tab" aria-controls="add_application" aria-selected="true">Оставить заявку</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="record-tab" data-bs-toggle="tab" href="#record" role="tab" aria-controls="record" aria-selected="false">Мои заявки</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="add_application" role="tabpanel" aria-labelledby="add_application-tab">
+            <div class="card w-100">
+                <div class="card-body">
+                    <h2>Создание новой заявки</h2>
+                    <form method="post" action="{% url 'request:add_orders' %}">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button class="w-100 btn btn-lg btn-primary mt-4" type="submit" id="submit" onclick="clicks();">Создать</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="record" role="tabpanel" aria-labelledby="record-tab">
+            <div class="card w-100 mt-4">
+                <div class="card-body">
+                    <h2>Ваши заявки</h2>
+                    <ul>
+                        {% for app in user_applications %}
+                            <li>
+                                <strong>Дата:</strong> {{ app.date }}<br>
+                                <strong>Описание проблемы:</strong> {{ app.description }}<br>
+                                <strong>Кабинет:</strong> {{ app.number_cab }}<br>
+                                <strong>Cтатус:</strong> {{ app.status_application }}<br>
+                                <button class="w-2 btn btn-lg btn-primary" onclick="editApplication({{ app.id }})">Редактировать</button>
+                                
+                                <form method="post" action="{% url 'request:delete_application' app.id %}">
+                                    {% csrf_token %}
+                                    <button class="w-2 btn btn-lg btn-primary" type="submit">Удалить</button>
+                                </form>
                     
-                        <hr>
-                    </li>
-                {% empty %}
-                    <p>У вас нет активных заявок.</p>
-                {% endfor %}
-            </ul>
+                                <form method="post" class="edit-form" action="{% url 'request:edit_application' app.id %}" style="display: none;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="editId" value="{{ app.id }}">
+                                    {{ form|crispy }}
+                                    <button type="button" class="w-8 btn btn-lg btn-primary" onclick="cancelEdit(this)">Отмена</button>
+                                    <button type="submit" class="w-8 btn btn-lg btn-primary" >Сохранить</button>
+                                </form>
+                                <hr>
+                            </li>
+                        {% empty %}
+                            <p>У вас нет активных заявок.</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script src="{% static 'js/main.js' %}"></script>
 <script>
     deleteAsteriskFields()
     itemFormRow()

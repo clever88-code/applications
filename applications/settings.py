@@ -157,7 +157,7 @@ JAZZMIN_SETTINGS = {
     "site_header": "Админка",
     "site_brand": "Журнал заявок",
     "welcome_sign": "Добро пожаловать авторизируетесь!",
-    #"site_logo": "logo.jpg",
+    "site_logo": "main/img/favicon.png",
 }
 
 

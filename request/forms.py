@@ -13,3 +13,9 @@ class Application_forms(forms.ModelForm):
     class Meta:
         model = Application
         fields = ['number_cab', 'description']
+
+
+class ApplicationFormEdit(forms.ModelForm):
+    class Meta:
+        model = Application
+        fields = ['number_cab', 'description']
