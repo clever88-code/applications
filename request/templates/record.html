@@ -52,7 +52,19 @@
                             <form method="post" class="edit-form w-25" action="{% url 'request:edit_application' app.id %}" style="display: none;">
                                 {% csrf_token %}
                                 <input type="hidden" name="editId" value="{{ app.id }}">
-                                {{ form|crispy }}
+                                <div class="form-floating my-2">
+                                    <select class="form-select" name="number_cab" id="floatingSelect" aria-label="Floating label select example">
+                                      {% for cabinet in all_offices %}
+                                      <option value="{{ cabinet.id }}" {% if cabinet.id == app.number_cab_id %} selected {% endif %}>{{ cabinet.number }}</option>
+                                      {% endfor %}
+                                      
+                                    </select>
+                                    <label for="floatingSelect">Выберите кабинет</label>
+                                </div>
+                                <div class="form-floating my-2">
+                                    <textarea class="form-control" placeholder="Опишите проблему" name="description" id="floatingTextarea2" style="height: 100px">{{ app.description }}</textarea>
+                                    <label for="floatingTextarea2">Опишите проблему</label>
+                                </div>
                                 
                                 <div class="d-flex justify-content-between">
                                     <button type="submit" class="btn btn-primary" onclick="edit_form();">Сохранить</button>

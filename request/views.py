@@ -9,7 +9,7 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.views.generic import FormView
 from .forms import Application_forms,ApplicationFormEdit  
-from core.models import Application  
+from core.models import Application, office  
 from django.views import View
 
 
@@ -20,8 +20,10 @@ class RecordView(FormView):
     def get(self, request, *args, **kwargs):
         user_id = request.user.id
         user_applications = Application.objects.filter(auth_user_id=user_id).exclude(status_application__id=3) #Добовляем исключение для объекта что бы пользователь не видел
+        all_offices = office.objects.all()
         form = Application_forms
         context = {
+            'all_offices': all_offices,
             'user_applications': user_applications,
             'form': form,
         }
