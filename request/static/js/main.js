@@ -54,6 +54,6 @@ function editApplication(id) {
     form.style.display = 'block';
 }
 function cancelEdit(button) {
-    var form = button.parentNode;
+    var form = button.parentNode.parentNode;
     form.style.display = 'none';
 }

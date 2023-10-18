@@ -29,32 +29,36 @@
         </div>
         <div class="tab-pane fade" id="record" role="tabpanel" aria-labelledby="record-tab">
             <div class="card w-100 mt-4">
-                <div class="card-body">
+                <div class="card-body ">
                     <h2>Ваши заявки</h2>
                     <ul class="list-group">
                         {% for app in user_applications %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong class="list-group-item">Дата: {{ app.date }}</strong>
-                                    <strong class="list-group-item">Описание проблемы: {{ app.description }}</strong>
-                                    <strong class="list-group-item">Кабинет: {{ app.number_cab }}</strong>
-                                    <strong class="list-group-item">Cтатус: {{ app.status_application }}</strong>
+                            <li class="list-group-item d-flex flex-column justify-content-between align-items-start ">
+                                <div class="w-25">
+                                    <div class="list-group-item fw-bold">Дата: <span class="fw-normal">{{ app.date }}</span></div>
+                                    <div class="list-group-item fw-bold">Описание проблемы: <span class="fw-normal" >{{ app.description }}</span> </div>
+                                    <div class="list-group-item fw-bold">Кабинет: <span class="fw-normal" >{{ app.number_cab }}</span></div>
+                                    <div class="list-group-item fw-bold">Cтатус: <span class="fw-normal" >{{ app.status_application }}</span></div>
                                 </div>
-                                <div class="d-flex"><div>
-                                    <button class="btn btn-primary" onclick="editApplication({{ app.id }})">Редактировать</button>
+                                <div class="d-flex justify-content-between list-group-item w-25">
+                                    <button class="btn btn-primary" type="button"  onclick="editApplication({{ app.id }})">Редактировать</button>
                                     <form method="post" action="{% url 'request:delete_application' app.id %}">
                                         {% csrf_token %}
-                                        <button class="btn btn-primary" style="margin-left: 16px; margin-top: 10px;" type="submit">Удалить</button>
+                                        <button class="btn btn-danger" type="submit">Удалить</button>
                                     </form>
                                 </div>
                             </li>
 
-                            <form method="post" class="edit-form" action="{% url 'request:edit_application' app.id %}" style="display: none;">
+                            <form method="post" class="edit-form w-25" action="{% url 'request:edit_application' app.id %}" style="display: none;">
                                 {% csrf_token %}
                                 <input type="hidden" name="editId" value="{{ app.id }}">
                                 {{ form|crispy }}
-                                <button type="button" class="btn btn-primary" onclick="cancelEdit(this)">Отмена</button>
-                                <button type="submit" class="btn btn-primary" onclick="edit_form();">Сохранить</button>
+                                
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary" onclick="edit_form();">Сохранить</button>
+                                    <button type="button" class="btn btn-secondary" onclick="cancelEdit(this)">Отмена</button>
+                                </div>
+                                
                             </form>
                             <hr>
                         {% empty %}

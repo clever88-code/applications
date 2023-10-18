@@ -62,22 +62,23 @@ class DeleteApplicationView(View):
 
 def Edit_application(request, app_id):
     
-    current_user = request.user.id
-
+    
+    print('xuyyyyyyyyyyyyyy')
+    print(app_id)
     
     try:
-        application = Application.objects.get(auth_user=current_user, id=app_id)
+        application = Application.objects.get(id=app_id)
     except Application.DoesNotExist:
         application = None  
 
     if request.method == 'POST':
         form = ApplicationFormEdit(request.POST, instance=application, initial={'number_cab': application.number_cab, 'description': application.description})
-        print(form)
         if form.is_valid():
             form.save()
             return redirect('request:record')
     else:
-        form = ApplicationFormEdit(instance=application)
+        form = ApplicationFormEdit(instance=application, initial={'number_cab': application.number_cab, 'description': application.description})
+        print(form)
 
     context = {
         'form': form,

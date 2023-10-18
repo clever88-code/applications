@@ -65,6 +65,6 @@ class Application(models.Model):
         verbose_name_plural = 'Заявки'
 
     def __str__(self):
-        return f'{self.auth_user}'
+        return f'№{self.id} каб.{self.number_cab} Заявитель {self.auth_user}'
 
 
