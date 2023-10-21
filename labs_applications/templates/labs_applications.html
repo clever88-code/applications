@@ -26,12 +26,18 @@
             <td>{{ application.status_application.name }}</td>
             <td>
                 {% if application.status_application.id == 1 %}
-                <form method="post" action="{% url 'labs_applications:take_application' application.id %}">
+                <form method="POST" action="{% url 'labs_applications:take_application' application.id %}">
                     {% csrf_token %}
                     <input type="hidden" name="application_id" value="{{ application.id }}">
                     <button type="submit" class="btn btn-primary">Принять заявку</button>
                 </form>
-                
+                {% endif %}
+                {% if application.status_application.id == 4 %}
+                <form method="POST" action="{% url 'labs_applications:change_application' application.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="application_id" value="{{ application.id }}">
+                    <button type="submit" class="btn btn-primary">Cдать заявку</button>
+                </form>
                 {% endif %}
             </td>
             </tr>

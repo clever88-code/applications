@@ -33,8 +33,29 @@ def take_application(request, application_id):
         application.worker = request.user
         application.save()
 
-        # Вернуть подтверждение (или другой HTTP-ответ)
-        return HttpResponse("Заявка принята успешно!")
+       
+       
 
-    return redirect('labs_applications')
+    return redirect('/labs_applications/')
 
+
+@login_required
+def change_application(request, application_id):
+    if request.method == 'POST':
+        print('xui')
+        application_id = request.POST.get('application_id')
+        application = Application.objects.get(id=application_id)
+
+        try:
+            lab_cabinet = Labs_cabinets.objects.get(worker=request.user, cabinet=application.number_cab)
+        except Labs_cabinets.DoesNotExist:
+            return redirect('labs_applications')
+
+        application.status_application = Status.objects.get(id=2)
+        application.worker = request.user
+        application.save()
+
+      
+        
+
+    return redirect('/labs_applications/')
