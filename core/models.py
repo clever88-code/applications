@@ -1,13 +1,21 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
+from simple_history.models import HistoricalRecords
 # Create your models here.
+
+
+
+
+
+
 
 class Status(models.Model):
     name = models.CharField(max_length=128)
 
     class Meta:
         #managed = False
-        db_table = 'Status'
+        db_table = 'statuses'
         verbose_name = 'Статус'
         verbose_name_plural = 'Статус'
 
@@ -51,12 +59,20 @@ class office(models.Model):
 
 class Application(models.Model):
     date = models.DateTimeField(default=timezone.now, verbose_name = 'Дата и Время')
-    auth_user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True, blank=True)
+    auth_user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Преподователь')
     number_cab = models.ForeignKey(office, on_delete=models.CASCADE, null=True, blank=True, verbose_name = 'Выберите кабинет')
     description = models.TextField('Описание проблемы')
     status_application = models.ForeignKey(Status, on_delete=models.CASCADE, default='1', verbose_name = 'Cтатус')
+    worker = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        limit_choices_to={'groups__name': 'labs'},  # Фильтр для выбора только пользователей из группы 'labs'
+        verbose_name = 'Лаборант' 
+    )
     
-    
+    history = HistoricalRecords()
 
     class Meta:
         #managed = False
@@ -66,5 +82,32 @@ class Application(models.Model):
 
     def __str__(self):
         return f'№{self.id} каб.{self.number_cab} Заявитель {self.auth_user}'
+    
 
+    def change_status(self, new_status):
+        if self.status_application != new_status:
+            self.status_application = new_status
+            self.history_user = User  # Устанавливаем пользователя, который изменил статус  
+            self.save()
+
+
+
+class Labs_cabinets(models.Model):
+    cabinet = models.ForeignKey(office, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Кабинет лаборанта')
+    worker = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        limit_choices_to={'groups__name': 'labs'},  # Фильтр для выбора только пользователей из группы 'labs'
+        verbose_name = 'Лаборант' 
+    )
+
+    class Meta:
+        #managed = False
+        db_table = 'labs_cabinets'
+        verbose_name = 'Кабинеты лаборатов'
+        verbose_name_plural = 'Кабинеты лаборатов'
+    def __str__(self):
+        return f'Кабинет {self.cabinet} привязан к лаборату {self.worker}'
 

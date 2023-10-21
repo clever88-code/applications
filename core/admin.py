@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(office)
 admin.site.register(Application)
 admin.site.register(Status)
+admin.site.register(Labs_cabinets)

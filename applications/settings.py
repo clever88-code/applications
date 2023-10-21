@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'core',
     'main',
     'request',
+    'labs_applications',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
