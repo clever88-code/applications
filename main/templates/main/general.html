@@ -48,7 +48,11 @@
                 {% if perms.core.view_status %}
                 <li><a href="/labs_applications" class="nav-link px-2 link-secondary">Просмотреть активные заявки</a></li>
                 {% endif %}
+                {% if perms.core.view_status %}
+                <li><a href="/labs_applications" class="nav-link px-2 link-secondary">Проверка завершоных заявко</a></li>
                 {% endif %}
+                {% endif %}
+
             </ul>
 
             <div class="col-md-3 text-end">
