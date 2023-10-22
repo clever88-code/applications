@@ -42,12 +42,11 @@
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{% url 'home' %}" class="nav-link px-2 link-secondary">Главная</a></li>
                 {% if user.is_authenticated %}
-                {% if perms.core.view_orders %}
-                <li><a href="/orders" class="nav-link px-2 link-secondary">Заказы</a></li>
+                {% if perms.core.view_application %}
+                <li><a href="/record" class="nav-link px-2 link-secondary">Заявки</a></li>
                 {% endif %}
-                {% if perms.core.view_clients %}
-                <li><a href="/record" class="nav-link px-2 link-secondary">Оставить заявку</a></li>
-                <li><a href="/record" class="nav-link px-2 link-secondary">Мои заявки</a></li>
+                {% if perms.core.view_status %}
+                <li><a href="/labs_applications" class="nav-link px-2 link-secondary">Просмотреть активные заявки</a></li>
                 {% endif %}
                 {% endif %}
             </ul>

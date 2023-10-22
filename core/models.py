@@ -5,11 +5,6 @@ from simple_history.models import HistoricalRecords
 # Create your models here.
 
 
-
-
-
-
-
 class Status(models.Model):
     name = models.CharField(max_length=128)
 
@@ -44,12 +39,13 @@ class AuthUser(models.Model):
         return f'{self.username}'
 
 
+
 class office(models.Model):
     number = models.CharField('Номера кабинета', default="", max_length=9)
 
     class Meta:
         #managed = False
-        db_table = 'office'
+        db_table = 'offices'
         verbose_name = 'кабинет'
         verbose_name_plural = 'кабинеты'
 
@@ -76,7 +72,7 @@ class Application(models.Model):
 
     class Meta:
         #managed = False
-        db_table = 'application'
+        db_table = 'applications'
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
 
