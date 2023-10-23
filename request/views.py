@@ -7,10 +7,14 @@ from core.models import Status
 from django.views import View
 # Create your views here.
 from django.shortcuts import render, redirect
-from django.views.generic import FormView
+from django.views.generic.edit import FormView
 from .forms import Application_forms,ApplicationFormEdit  
 from core.models import Application, office  
 from django.views import View
+from django.contrib.auth.decorators import login_required
+
+
+
 
 
 class RecordView(FormView):
@@ -63,9 +67,7 @@ class DeleteApplicationView(View):
 
 
 def Edit_application(request, app_id):
-    
-    
-    print('xuyyyyyyyyyyyyyy')
+
     print(app_id)
     
     try:
