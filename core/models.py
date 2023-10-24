@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from simple_history.models import HistoricalRecords
+
 # Create your models here.
 
 
