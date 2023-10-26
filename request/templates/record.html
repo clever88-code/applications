@@ -40,17 +40,23 @@
                                 <div class="fw-bold">Статус: <span class="fw-normal">{{ app.status_application }}</span></div>
                             </li><br>
                             <div class="d-flex justify-content-between">
+                                {% if app.status_application.id == 1 %}
                                 <div class="btn-group" role="group">
+                                    
                                     <button class="btn btn-primary" type="button" onclick="editApplication({{ app.id }})">Редактировать</button>
+                                    
                                     <form method="post" action="{% url 'request:delete_application' app.id %}">
                                         {% csrf_token %}
                                         <button class="btn btn-danger" type="submit">Удалить</button>
                                     </form>
                                 </div>
+                                {% endif %}
                             </div>
+                            
                             <div class="mt-2">
                                 <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#historyModal{{ app.id }}">История</button>
                             </div>
+                            <br>
                             
                             
                             <form method="post" class="edit-form w-25" action="{% url 'request:edit_application' app.id %}" style="display: none;">
