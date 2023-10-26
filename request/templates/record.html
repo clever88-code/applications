@@ -33,45 +33,26 @@
                     <h2>Ваши заявки</h2>
                     <ul class="list-group">
                         {% for app in user_applications %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-
-                                <div>
-                                    <div class="list-group-item fw-bold">Дата: <span class="fw-normal">{{ app.date }}</span></div>
-                                    <div class="list-group-item fw-bold">Описание проблемы: <span class="fw-normal">{{ app.description }}</span></div>
-                                    <div class="list-group-item fw-bold">Кабинет: <span class="fw-normal">{{ app.number_cab }}</span></div>
-                                    <div class="list-group-item fw-bold">Статус: <span class="fw-normal">{{ app.status_application }}</span></div>
-                                </div>
-                                <div class="d-flex flex-column">
+                            <li class="list-group-item">
+                                <div class="fw-bold">Дата: <span class="fw-normal">{{ app.date }}</span></div>
+                                <div class="fw-bold">Описание проблемы: <span class="fw-normal">{{ app.description }}</span></div>
+                                <div class="fw-bold">Кабинет: <span class="fw-normal">{{ app.number_cab }}</span></div>
+                                <div class="fw-bold">Статус: <span class="fw-normal">{{ app.status_application }}</span></div>
+                            </li><br>
+                            <div class="d-flex justify-content-between">
+                                <div class="btn-group" role="group">
                                     <button class="btn btn-primary" type="button" onclick="editApplication({{ app.id }})">Редактировать</button>
                                     <form method="post" action="{% url 'request:delete_application' app.id %}">
                                         {% csrf_token %}
                                         <button class="btn btn-danger" type="submit">Удалить</button>
                                     </form>
                                 </div>
-                                <div>
-                                    <h4>История изменений:</h4>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Дата и время изменения</th>
-                                                <th>Пользователь</th>
-                                                <th>Старый статус</th>
-                                                <th>Новый статус</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for history_entry in app.history.all %}
-                                                <tr>
-                                                    <td>{{ history_entry.history_date }}</td>
-                                                    <td>{{ history_entry.history_user }}</td>
-                                                    <td>{{ history_entry.prev_record.status_application }}</td>
-                                                    <td>{{ history_entry.status_application }}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </li>
+                            </div>
+                            <div class="mt-2">
+                                <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#historyModal{{ app.id }}">История</button>
+                            </div>
+                            
+                            
                             <form method="post" class="edit-form w-25" action="{% url 'request:edit_application' app.id %}" style="display: none;">
                                 {% csrf_token %}
                                 <input type="hidden" name="editId" value="{{ app.id }}">
@@ -92,14 +73,52 @@
                                     <button type="button" class="btn btn-secondary" onclick="cancelEdit(this)">Отмена</button>
                                 </div>
                             </form>
-                            <hr>
+
+        
+                            <div class="modal fade" id="historyModal{{ app.id }}" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel{{ app.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="historyModalLabel{{ app.id }}">История заявки №{{ app.id }}</h5>
+                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Закрыть">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Дата и время изменения</th>
+                                                        <th>Пользователь</th>
+                                                        <th>Старый статус</th>
+                                                        <th>Новый статус</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for history_entry in app.history.all %}
+                                                        <tr>
+                                                            <td>{{ history_entry.history_date }}</td>
+                                                            <td>{{ history_entry.history_user }}</td>
+                                                            <td>{{ history_entry.prev_record.status_application }}</td>
+                                                            <td>{{ history_entry.status_application }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% empty %}
                             <p>У вас нет активных заявок.</p>
                         {% endfor %}
                     </ul>
-                    
+                </div>
+            </div>    
         </div>
-        
     </div>
 </div>
 
