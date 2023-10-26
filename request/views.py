@@ -26,10 +26,22 @@ class RecordView(FormView):
         user_applications = Application.objects.filter(auth_user_id=user_id).exclude(status_application__id=3) #Добовляем исключение для объекта что бы пользователь не видел
         all_offices = office.objects.all()
         form = Application_forms
+
+
+
+        application_history = {}
+        for application in user_applications:
+            history_entries = application.history.all()
+            application_history[application.id] = history_entries
+
+
+
+                
         context = {
             'all_offices': all_offices,
             'user_applications': user_applications,
             'form': form,
+            'application_history': application_history,
         }
         return render(request, self.template_name, context)
     
