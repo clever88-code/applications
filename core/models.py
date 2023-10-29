@@ -68,7 +68,8 @@ class Application(models.Model):
         limit_choices_to={'groups__name': 'labs'},  # Фильтр для выбора только пользователей из группы 'labs'
         verbose_name = 'Лаборант' 
     )
-    
+    comments = models.TextField('Комментарии',  null=True, blank=True)
+
     history = HistoricalRecords()
 
     class Meta:

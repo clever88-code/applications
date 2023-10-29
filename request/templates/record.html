@@ -33,17 +33,17 @@
                     <h2>Ваши заявки</h2>
                     <ul class="list-group">
                         {% for app in user_applications %}
-                            <li class="list-group-item">
+                            <li class="list-group-item my-2">
                                 <div class="fw-bold">Дата: <span class="fw-normal">{{ app.date }}</span></div>
                                 <div class="fw-bold">Описание проблемы: <span class="fw-normal">{{ app.description }}</span></div>
                                 <div class="fw-bold">Кабинет: <span class="fw-normal">{{ app.number_cab }}</span></div>
                                 <div class="fw-bold">Статус: <span class="fw-normal">{{ app.status_application }}</span></div>
-                            </li><br>
-                            <div class="d-flex justify-content-between">
+                            </li>
+                            <div class="d-flex justify-content-between my-2">
                                 {% if app.status_application.id == 1 %}
-                                <div class="btn-group" role="group">
+                                <div class="d-flex justify-content-between align-items-center">
                                     
-                                    <button class="btn btn-primary" type="button" onclick="editApplication({{ app.id }})">Редактировать</button>
+                                    <button class="btn btn-primary me-2" type="button" onclick="editApplication({{ app.id }})">Редактировать</button>
                                     
                                     <form method="post" action="{% url 'request:delete_application' app.id %}">
                                         {% csrf_token %}
@@ -53,13 +53,11 @@
                                 {% endif %}
                             </div>
                             
-                            <div class="mt-2">
+                            <div class="my-2">
                                 <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#historyModal{{ app.id }}">История</button>
-                            </div>
-                            <br>
+                            </div>            
                             
-                            
-                            <form method="post" class="edit-form w-25" action="{% url 'request:edit_application' app.id %}" style="display: none;">
+                            <form method="post" class="edit-form w-25 my-2" action="{% url 'request:edit_application' app.id %}" style="display: none;">
                                 {% csrf_token %}
                                 <input type="hidden" name="editId" value="{{ app.id }}">
                                 <div class="form-floating my-2">
@@ -82,13 +80,11 @@
 
         
                             <div class="modal fade" id="historyModal{{ app.id }}" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel{{ app.id }}" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
+                                <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="historyModalLabel{{ app.id }}">История заявки №{{ app.id }}</h5>
-                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Закрыть">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <table class="table table-bordered">
@@ -96,8 +92,8 @@
                                                     <tr>
                                                         <th>Дата и время изменения</th>
                                                         <th>Пользователь</th>
-                                                        <th>Старый статус</th>
-                                                        <th>Новый статус</th>
+                                                        <th>Комментарий</th>
+                                                        <th>Статус</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -105,7 +101,11 @@
                                                         <tr>
                                                             <td>{{ history_entry.history_date }}</td>
                                                             <td>{{ history_entry.history_user }}</td>
-                                                            <td>{{ history_entry.prev_record.status_application }}</td>
+                                                            {% if history_entry.comments != None %}
+                                                            <td>{{ history_entry.comments }}</td>
+                                                            {% else %}
+                                                            <td></td>
+                                                            {% endif %}
                                                             <td>{{ history_entry.status_application }}</td>
                                                         </tr>
                                                     {% endfor %}

@@ -4,43 +4,279 @@
 {% block title %}Просмотр текущих заявок{% endblock %}
 {% block body %}
 
-
-
-<div class='container '>
+<div class="container">
     <h1 class="header_text" >Проверка заявок</h1><br>
+
+    <form action="{% url 'head_admin:applications_by_status' %}" method="POST" class="d-flex flex-column my-2">
+        {% csrf_token %}
+        <div class="d-flex flex-column border border-1 border-emphasis px-4 rounded">
+            <h5 class="h5 my-2">Фильтр</h5>
+            <div class="mb-3 row">
+                <label for="dateFilter" class="col-sm-2 col-form-label">Дата</label>
+                <div class="col-sm-4">
+                  <input type="date" class="form-control" name="date_filter" {% if filters.date__contains != None %} value="{{filters.date__contains}}" {% endif %} id="dateFilter">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="statusFilter" class="col-sm-2 col-form-label">Статус</label>
+                <div class="col-sm-4">
+                    <select class="form-select" name="status_application" id="statusFilter" aria-label="Статусы">
+                        <option 
+                            value="0" 
+                            {% if filters.status_application != None and filters.status_application == status.id %} selected {% endif %}
+                        >Все
+                        </option>
+                        {% for status in statuses %}
+                        <option 
+                            value="{{status.id}}" 
+                            {% if filters.status_application != None and filters.status_application == status.id %} selected {% endif %}
+                        >{{status.name}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="statusFilter" class="col-sm-2 col-form-label">Кабинет</label>
+                <div class="col-sm-4">
+                    <select class="form-select" name="number_cab" id="statusFilter" aria-label="Статусы">
+                        <option 
+                            value="0" 
+                            {% if filters.number_cab != None and filters.number_cab == 0 %} selected {% endif %}
+                        >Все
+                        </option>
+                        {% for cab in cabinets %}
+                        <option 
+                            value="{{cab.id}}" 
+                            {% if filters.number_cab != None and filters.number_cab == cab.id %} selected {% endif %}
+                        >{{cab.number}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-start align-items-center my-2">
+                <button type="submit" class="btn btn-info">Применить</button>
+            </div>
+        </div>
+    </form>
 
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>Заявитель</th>
-            <th>Кабинет</th>
-            <th>Описание</th>
-            <th>Статус</th>
+            <th>
+                №
+                <form action="{% url 'head_admin:applications_by_status' %}" method="POST" class="d-inline-block p-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="sorting" value="id">
+                    {% if current_sorting == 'id' and current_ascing == 1 %}
+                        <input type="hidden" name="ascing" value="0">
+                    {% else %}
+                        <input type="hidden" name="ascing" value="1">
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-info">
+                        {% if current_sorting == 'id' and current_ascing == 1 %}
+                        🠗
+                        {% else %}
+                        🠕
+                        {% endif %}
+                    </button>
+                </form>
+            </th>
+            <th>
+                Дата создания
+                <form action="{% url 'head_admin:applications_by_status' %}" method="POST" class="d-inline-block p-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="sorting" value="date">
+                    {% if current_sorting == 'date' and current_ascing == 1 %}
+                        <input type="hidden" name="ascing" value="0">
+                    {% else %}
+                        <input type="hidden" name="ascing" value="1">
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-info">
+                        {% if current_sorting == 'date' and current_ascing == 1 %}
+                        🠗
+                        {% else %}
+                        🠕
+                        {% endif %}
+                    </button>
+                </form>
+            </th>
+            <th>
+                Заявитель
+                <form action="{% url 'head_admin:applications_by_status' %}" method="POST" class="d-inline-block p-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="sorting" value="auth_user">
+                    {% if current_sorting == 'auth_user' and current_ascing == 1 %}
+                        <input type="hidden" name="ascing" value="0">
+                    {% else %}
+                        <input type="hidden" name="ascing" value="1">
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-info">
+                        {% if current_sorting == 'auth_user' and current_ascing == 1 %}
+                        🠗
+                        {% else %}
+                        🠕
+                        {% endif %}
+                    </button>
+                </form>
+            </th>
+            <th>
+                Кабинет
+                <form action="{% url 'head_admin:applications_by_status' %}" method="POST" class="d-inline-block p-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="sorting" value="number_cab">
+                    {% if current_sorting == 'number_cab' and current_ascing == 1 %}
+                        <input type="hidden" name="ascing" value="0">
+                    {% else %}
+                        <input type="hidden" name="ascing" value="1">
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-info">
+                        {% if current_sorting == 'number_cab' and current_ascing == 1 %}
+                        🠗
+                        {% else %}
+                        🠕
+                        {% endif %}
+                    </button>
+                </form>
+            </th>
+            <th>
+                Описание
+                <form action="{% url 'head_admin:applications_by_status' %}" method="POST" class="d-inline-block p-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="sorting" value="description">
+                    {% if current_sorting == 'description' and current_ascing == 1 %}
+                        <input type="hidden" name="ascing" value="0">
+                    {% else %}
+                        <input type="hidden" name="ascing" value="1">
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-info">
+                        {% if current_sorting == 'description' and current_ascing == 1 %}
+                        🠗
+                        {% else %}
+                        🠕
+                        {% endif %}
+                    </button>
+                </form>
+            </th>
+            <th>
+                Статус
+                <form action="{% url 'head_admin:applications_by_status' %}" method="POST" class="d-inline-block p-1">
+                    {% csrf_token %}
+                    <input type="hidden" name="sorting" value="status_application">
+                    {% if current_sorting == 'status_application' and current_ascing == 1 %}
+                        <input type="hidden" name="ascing" value="0">
+                    {% else %}
+                        <input type="hidden" name="ascing" value="1">
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-info">
+                        {% if current_sorting == 'status_application' and current_ascing == 1 %}
+                        🠗
+                        {% else %}
+                        🠕
+                        {% endif %}
+                    </button>
+                </form>
+            </th>
             <th>Действия</th>
         </tr>
         </thead>
         <tbody>
         {% for application in applications %}
             <tr>
+            <td>{{ application.id }}</td>
+            <td>{{ application.date }}</td>
             <td>{{ application.auth_user.username }}</td>
             <td>{{ application.number_cab }}</td>
             <td>{{ application.description }}</td>
             <td>{{ application.status_application.name }}</td>
             <td>
-                {% if application.status_application.id == 2 %}
-                <form method="POST" action="{% url 'head_admin:edit_application' application.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="application_id" value="{{ application.id }}">
-                    <button type="submit" class="btn btn-primary">Одобрить</button>
-                </form>
-                {% endif %}
-                {% if application.status_application.id == 5 %}
-                <form method="POST" action="{% url 'head_admin:archive_application' application.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="application_id" value="{{ application.id }}">
-                    <button type="submit" class="btn btn-primary">В архив</button>
-                </form>
-                {% endif %}
+                <div class="d-flex flex-row align-items-center">
+                    {% if application.status_application.id == 2 %}
+                    <form class="mx-2" method="POST" action="{% url 'head_admin:edit_application' application.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Принять работу</button>
+                    </form>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#returnApplication{{ application.id }}">
+                        Вернуть
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="returnApplication{{ application.id }}" tabindex="-1" aria-labelledby="returnApplicationLabel{{ application.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="returnApplicationLabel{{ application.id }}">Форма отказа в принятие</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="POST" action="{% url 'head_admin:return_application' application.id %}">
+                                <div class="modal-body">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="comments" class="form-label">Причина отказа</label>
+                                        <textarea class="form-control" placeholder="Причина отказа" id="comments" name="comments" required rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if application.status_application.id == 5 %}
+                    <form class="mx-2" method="POST" action="{% url 'head_admin:archive_application' application.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">В архив</button>
+                    </form>
+                    {% endif %}
+    
+                    <div class="mx-2">
+                        <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#historyModal{{ application.id }}">История</button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="historyModal{{ application.id }}" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel{{ application.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="historyModalLabel{{ application.id }}">История заявки №{{ application.id }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Дата и время изменения</th>
+                                            <th>Пользователь</th>
+                                            <th>Комментарий</th>
+                                            <th>Статус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for history_entry in application.history.all %}
+                                            <tr>
+                                                <td>{{ history_entry.history_date }}</td>
+                                                <td>{{ history_entry.history_user }}</td>
+                                                {% if history_entry.comments != None %}
+                                                <td>{{ history_entry.comments }}</td>
+                                                {% else %}
+                                                <td></td>
+                                                {% endif %}
+                                                <td>{{ history_entry.status_application }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </td>
             </tr>
@@ -48,14 +284,6 @@
         </tbody>
     </table>
 </div>
-
-
-
-
-
-
-
-
 
 
 
