@@ -4,7 +4,7 @@ from simple_history.admin import SimpleHistoryAdmin
 from django.utils.html import format_html
 
 admin.site.register(office)
-#admin.site.register(Status)
+admin.site.register(Status)
 admin.site.register(Labs_cabinets)
 
 class ApplicationAdmin(SimpleHistoryAdmin):

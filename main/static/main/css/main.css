@@ -74,3 +74,21 @@
 .header_text{
     text-align: center;
 }
+
+.status-color-1 {
+    color: blue; /* Цвет для статуса 1 */
+}
+
+.status-color-2 {
+    color: green; /* Цвет для статуса 2 */
+}
+
+.status-color-3 {
+    color: red; /* Цвет для статуса 3 */
+}
+.status-color-4 {
+    color: red; /* Цвет для статуса 3 */
+}
+.status-color-5 {
+    color: red; /* Цвет для статуса 3 */
+}
