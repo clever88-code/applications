@@ -15,7 +15,6 @@ def applications_by_status(request):
     if 'status_application' in filters:
         statuses.append(filters['status_application'])
 
-    print(statuses)
     applications = Application.objects.filter(
         Q(status_application__in=statuses)
         &

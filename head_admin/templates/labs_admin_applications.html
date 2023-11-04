@@ -12,9 +12,13 @@
         <div class="d-flex flex-column border border-1 border-emphasis px-4 rounded">
             <h5 class="h5 my-2">Фильтр</h5>
             <div class="mb-3 row">
-                <label for="dateFilter" class="col-sm-2 col-form-label">Дата</label>
-                <div class="col-sm-4">
-                  <input type="date" class="form-control" name="date_filter" {% if filters.date__contains != None %} value="{{filters.date__contains}}" {% endif %} id="dateFilter">
+                <label for="dateGte" class="col-sm-1 col-form-label">Дата от</label>
+                <div class="col-sm-2">
+                  <input type="text" class="form-control bs-picker" name="date__gte" {% if filters.date__gte != None %} value="{{filters.date__gte}}" {% endif %} id="dateGte">
+                </div>
+                <label for="dateLte" class="col-sm-1 col-form-label">Дата до</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control bs-picker" name="date__lte" {% if filters.date__lte != None %} value="{{filters.date__lte}}" {% endif %} id="dateLte">
                 </div>
             </div>
             <div class="mb-3 row">
@@ -285,6 +289,25 @@
     </table>
 </div>
 
-
+<script>
+    $('.bs-picker').datetimepicker({
+        container:'body',
+        language:'ru',
+        minuteStep:5,
+        format:'dd.mm.yyyy hh:ii',
+        weekStart:1,
+    })
+    $(document).ready(() => {
+        $('.bs-picker').each((key, e) => {
+            const val = $(e).val()
+            if (val) {
+                const date = moment(val, 'YYYY-MM-DDThh:mm').format('DD.MM.YYYY hh:mm')
+                if (date) {
+                    $(e).val(date)
+                }
+            }
+        })
+    })
+</script>
 
 {% endblock %}

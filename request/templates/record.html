@@ -33,11 +33,16 @@
                     <h2>Ваши заявки</h2>
                     <ul class="list-group">
                         {% for app in user_applications %}
-                            <li class="list-group-item my-2">
-                                <div class="fw-bold">Дата: <span class="fw-normal">{{ app.date }}</span></div>
-                                <div class="fw-bold">Описание проблемы: <span class="fw-normal">{{ app.description }}</span></div>
-                                <div class="fw-bold">Кабинет: <span class="fw-normal">{{ app.number_cab }}</span></div>
-                                <div class="fw-bold">Статус: 
+                            <li class="list-group-item my-2 rounded">
+                                <div class="fw-bold bg-status-{{ app.status_application.id }} p-2 w-25">Номер заявки: 
+                                    <span class="fw-normal">
+                                        {{ app.id }}
+                                    </span>
+                                </div>
+                                <div class="fw-bold p-2">Дата: <span class="fw-normal">{{ app.date }}</span></div>
+                                <div class="fw-bold p-2">Описание проблемы: <span class="fw-normal">{{ app.description }}</span></div>
+                                <div class="fw-bold p-2">Кабинет: <span class="fw-normal">{{ app.number_cab }}</span></div>
+                                <div class="fw-bold p-2">Статус: 
                                     <span class="fw-normal status-{{ app.status_application.id }}">
                                         {{ app.status_application }}
                                     </span>
@@ -61,6 +66,8 @@
                                 <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target="#historyModal{{ app.id }}">История</button>
                             </div>            
                             
+                            <div class="p-1 bg-secondary w-100 rounded"></div>
+
                             <form method="post" class="edit-form w-25 my-2" action="{% url 'request:edit_application' app.id %}" style="display: none;">
                                 {% csrf_token %}
                                 <input type="hidden" name="editId" value="{{ app.id }}">
@@ -111,7 +118,7 @@
                                                             <td></td>
                                                             {% endif %}
                                                             <td>
-                                                                <span class="fw-normal status-{{ history_entry.status_application}}">
+                                                                <span class="fw-bold status-{{ history_entry.status_application}}">
                                                                     {{ history_entry.status_application }}
                                                                 </span>
                                                                 
