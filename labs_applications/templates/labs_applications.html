@@ -264,7 +264,11 @@
                                                     {% else %}
                                                     <td></td>
                                                     {% endif %}
-                                                    <td>{{ history_entry.status_application }}</td>
+                                                    <td>
+                                                        <span class="fw-normal status-{{ history_entry.status_application.id }}">
+                                                            {{ history_entry.status_application }}
+                                                        </span>
+                                                    </td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
